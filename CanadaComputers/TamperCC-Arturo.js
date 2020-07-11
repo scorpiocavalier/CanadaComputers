@@ -3,7 +3,7 @@
 // @namespace    None
 // @version      0.1
 // @description  Stock Level Check for Canada Computers Website
-// @author       Yunpeng
+// @author       Arturo
 // @match        https://www.canadacomputers.com/index.php?cPath=*
 // @include      https://www.canadacomputers.com/search/results_details.php?*
 // @grant        none
