@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         Stock Level Check(Yungpeng)
+// @name         Stock Level Check(Arturo)
 // @namespace    None
 // @version      0.1
 // @description  Stock Level Check for Canada Computers Website
@@ -10,63 +10,47 @@
 // ==/UserScript==
 
 (function () {
-  const storeName = "Greenfield Park"
-  const available_color = "#CCCCCC"
-	const unavailable_color = "#FF0000"
-	const stores = {
-		"Gatineau": 0,
-		"Greenfield Park": 0,
-		"Laval": 0,
-		"Montréal Downtown": 0,
-		"West Island": 0
-  }
 
-  let product_list = document.querySelector("#product-list")
-  let productTemplate = product_list.querySelectorAll(".productTemplate")
-  let stockPopup = product_list.querySelectorAll(".stock-popup")
-  let product_stock = product_list.querySelectorAll(".stocklevel-pop")
+	const available_color = "green"
+	const unavailable_color = "#CCCCCC"
 
-	String.prototype.GetNum = function () {
-		let regEx = /[^\d]/g
-		return this.replace(regEx, "")
+	const stores = [
+		"Greenfield Park",
+		"Laval",
+		"Montréal Downtown",
+		"West Island"
+	]
+
+	const displayStockLevel = () => {
+
+		let product_list_container = document.querySelector("#product-list")
+		let product_list = product_list_container.querySelectorAll(".stocklevel-pop")
+		let stockPopup = product_list_container.querySelectorAll(".stock-popup")
+
+		for (let index = 0; index < stockPopup.length; index++) {
+			let container = document.createElement('div')
+			for (let storeName of stores) {
+
+				let currentStockPopup = stockPopup[index]
+				currentStockPopup.style.display = 'flex'
+				currentStockPopup.style.flexDirection = 'column'
+				currentStockPopup.style.border = '1px solid'
+				currentStockPopup.style.padding = '5px 10px'
+
+				let store = document.createElement('span')
+				let productText = product_list[index].innerText
+				let indexStore = productText.indexOf(storeName)
+				let productTextSlice = productText.slice(indexStore)
+				let amountInStock = productTextSlice.match(/(-|\d\D|\d)/i)[0]
+
+				store.style.color = amountInStock > 0 ? available_color : unavailable_color
+				store.innerText = `${storeName}: ${amountInStock}`
+				container.appendChild(store)
+				currentStockPopup.innerHTML = container.innerHTML
+			}
+		}
 	}
 
-	function getStockLevel() {
-    let str = ""
-
-		for (let i = 0; i <= product_stock.length; i++) {
-			let stock = product_stock[i].innerText
-			let index = stock.indexOf(storeName)
-			let GaStock = stock.substr(index)
-      let num = GaStock.match(/\s\s(-|\d)/)[1]
-      num = num!='-' ? num:"0"
-
-			if (num != 0) {
-				str = `<span style="background-color:${available_color}">${storeName}: ${num}</span>`
-			} else {
-				str = `<span style="background-color:${unavailable_color}">${storeName}: ${num}</span>`
-			}
-
-			let insertDiv = document.querySelectorAll("a[data-stocklevel-pop-id]")
-			if (insertDiv[i].innerHTML.indexOf("span") == -1) {
-				insertDiv[i].innerHTML = str + insertDiv[i].innerHTML
-			}
-    }
-
-  }
-
-  const displayStockLevel = () => {
-    stockPopup.forEach(stockLevelElement => {
-      for(let storeName in stores) {
-        let store = document.createElement('span')
-        store.innerText = `${storeName}: ${stores[storeName]}\n`
-        stockLevelElement.appendChild(store)
-      }
-    })
-  }
-
-  displayStockLevel()
-
-   //window.addEventListener("load", getStockLevel)
-	// window.addEventListener("scroll", getStockLevel)
+	window.addEventListener("load", displayStockLevel)
+	window.addEventListener("scroll", displayStockLevel)
 })()
