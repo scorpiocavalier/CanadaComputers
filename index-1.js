@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Stock Level Check(Arturo)
 // @namespace    None
-// @version      0.1
+// @version      0.2
 // @description  Stock Level Check for Canada Computers Website
 // @author       Arturo
 // @match        https://www.canadacomputers.com/index.php?cPath=*
