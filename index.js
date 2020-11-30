@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Stock Level Check(Arturo)
 // @namespace    None
-// @version      0.2
+// @version      0.3
 // @description  Stock Level Check for Canada Computers Website
 // @author       Arturo
 // @match        https://www.canadacomputers.com/index.php?cPath=*
@@ -14,7 +14,8 @@
     "Brossard",
     "Laval",
     "Montréal Downtown",
-    "West Island"
+    "West Island",
+    "Marché Central"
   ]
 
   const getProducts = () => document.querySelector('#product-list')
@@ -48,6 +49,7 @@
     switch (store) {
       case 'Montréal Downtown': return 'MTL'
       case 'West Island': return 'WI'
+      case 'Marché Central': return 'MC'
       default: return store
     }
   }
